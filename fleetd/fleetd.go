@@ -30,6 +30,7 @@ import (
 	"github.com/coreos/fleet/pkg"
 	"github.com/coreos/fleet/registry"
 	"github.com/coreos/fleet/server"
+	"github.com/coreos/fleet/systemd"
 	"github.com/coreos/fleet/version"
 )
 
@@ -79,6 +80,8 @@ func main() {
 	cfgset.Bool("disable_engine", false, "Disable the engine entirely, use with care")
 	cfgset.Bool("verify_units", false, "DEPRECATED - This option is ignored")
 	cfgset.String("authorized_keys_file", "", "DEPRECATED - This option is ignored")
+	cfgset.Bool("systemd_user_connection", false, "Connect to systemd user instance")
+	cfgset.String("systemd_units_dir", systemd.DefaultUnitsDirectory, "Systemd units directory")
 
 	globalconf.Register("", cfgset)
 	cfg, err := getConfig(cfgset, *cfgPath)
@@ -193,6 +196,8 @@ func getConfig(flagset *flag.FlagSet, userCfgFile string) (*config.Config, error
 		VerifyUnits:             (*flagset.Lookup("verify_units")).Value.(flag.Getter).Get().(bool),
 		TokenLimit:              (*flagset.Lookup("token_limit")).Value.(flag.Getter).Get().(int),
 		AuthorizedKeysFile:      (*flagset.Lookup("authorized_keys_file")).Value.(flag.Getter).Get().(string),
+		SystemdUserConnection:   (*flagset.Lookup("systemd_user_connection")).Value.(flag.Getter).Get().(bool),
+		SystemdUnitsDir:         (*flagset.Lookup("systemd_units_dir")).Value.(flag.Getter).Get().(string),
 	}
 
 	if cfg.VerifyUnits {

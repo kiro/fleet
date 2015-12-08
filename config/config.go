@@ -34,6 +34,8 @@ type Config struct {
 	DisableEngine           bool
 	VerifyUnits             bool
 	AuthorizedKeysFile      string
+	SystemdUserConnection   bool
+	SystemdUnitsDir         string
 }
 
 func (c *Config) Metadata() map[string]string {

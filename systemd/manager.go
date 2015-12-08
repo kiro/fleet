@@ -40,8 +40,16 @@ type systemdUnitManager struct {
 	mutex  sync.RWMutex
 }
 
-func NewSystemdUnitManager(uDir string) (*systemdUnitManager, error) {
-	systemd, err := dbus.New()
+func NewSystemdUnitManager(uDir string, userInstance bool) (*systemdUnitManager, error) {
+	var systemd *dbus.Conn
+	var err error
+
+	if userInstance {
+		systemd, err = dbus.NewUserConnection()
+	} else {
+		systemd, err = dbus.New()
+	}
+
 	if err != nil {
 		return nil, err
 	}

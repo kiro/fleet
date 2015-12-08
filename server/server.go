@@ -67,7 +67,7 @@ func New(cfg config.Config) (*Server, error) {
 		return nil, err
 	}
 
-	mgr, err := systemd.NewSystemdUnitManager(systemd.DefaultUnitsDirectory)
+	mgr, err := systemd.NewSystemdUnitManager(cfg.SystemdUnitsDir, cfg.SystemdUserConnection)
 	if err != nil {
 		return nil, err
 	}
